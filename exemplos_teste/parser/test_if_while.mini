@@ -1,0 +1,14 @@
+// Teste de if e while
+var numero : int = 10;
+
+if (numero > 5) {
+  print "Número é maior que 5";
+}
+else {
+  print "Número é menor ou igual a 5";
+}
+
+var contador : int = 0;
+while (contador < 5) {
+  set contador = contador + 1;
+}

@@ -1,0 +1,5 @@
+// Teste de declaração de variável
+var x : int = 5;
+var y : real = 3.14;
+var z : bool = true;
+var nome : string = "Mini-Lang";

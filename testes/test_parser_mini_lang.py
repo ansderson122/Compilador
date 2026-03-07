@@ -1,23 +1,26 @@
 """
-Script de testes para o Lexer e Parser da linguagem Mini-Lang
+Script de testes para o Parser da linguagem Mini-Lang
 
-TESTES DO LEXER:
-1. Comentários (//)
-2. Números inteiros e reais
-3. Strings com escape
-4. Tokens básicos
-5. Erros lexicos (strings não fechadas, caracteres inválidos)
+Os testes do Lexer estão em: test_lexer_mini_lang.py
 
+TESTES DO PARSER:
+1. Declaração de variável
+2. Operações aritméticas
+3. Funções
+4. Controle de fluxo (if/while)
+5. Programas completos
+6. Erros de sintaxe
 """
 
 import sys
 import os
 
-# Adicionar o caminho do lexer ao sys.path
+# Adicionar os caminhos ao sys.path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'Lexer'))
 sys.path.insert(0, os.path.dirname(__file__) + '/..')
 
 from Lexer.lexer import Lexer
+from Parser.paser import Parser
 from constants import *
 from error import Error
 
@@ -28,14 +31,13 @@ def print_separator(title):
     print("="*60)
 
 
-def test_file(filename, test_name, tester_func, verbosity=1):
+def test_file_parser(filename, test_name, verbosity=1):
     """
-    Testa um arquivo com uma função de teste customizável
+    Testa um arquivo com o parser
     
     Args:
         filename: nome do arquivo a testar
         test_name: nome do teste para exibição
-        tester_func: função que recebe (filename, text) e retorna (resultado, error)
         verbosity: nível de detalhamento (1=completo, 2=erros, 3=silencioso)
     
     Verbosity levels:
@@ -47,7 +49,7 @@ def test_file(filename, test_name, tester_func, verbosity=1):
     if verbosity <= 1:
         print_separator(test_name)
     
-    filepath = os.path.join(os.path.dirname(__file__), '..', 'exemplos_teste', 'lexer', filename)
+    filepath = os.path.join(os.path.dirname(__file__), '..', 'exemplos_teste', 'parser', filename)
     
     if not os.path.exists(filepath):
         if verbosity <= 2:
@@ -66,42 +68,48 @@ def test_file(filename, test_name, tester_func, verbosity=1):
             print("Conteudo do arquivo:")
             print("-" * 60)
             lines = text.split('\n')
-            for i, line in enumerate(lines[:15], 1):  # Mostra apenas as 15 primeiras linhas
+            for i, line in enumerate(lines[:20], 1):  # Mostra apenas as 20 primeiras linhas
                 print(f"{i:2d}: {line}")
-            if len(lines) > 15:
-                print(f"... ({len(lines) - 15} linhas omitidas)")
+            if len(lines) > 20:
+                print(f"... ({len(lines) - 20} linhas omitidas)")
             print("-" * 60)
         
-        # Executa a função de teste customizada
-        resultado, error = tester_func(filename, text)
+        # Executa o lexer primeiro
+        lexer = Lexer(filename, text)
+        tokens, error = lexer.make_tokens()
         
         if error:
             if verbosity <= 2:
                 if verbosity <= 1:
-                    print(f"\n[ERRO DETECTADO]:")
+                    print(f"\n[ERRO LEXER]:")
                     print(f"\n{error.as_string()}")
                 else:
-                    print(f"[ERRO] {test_name}")
+                    print(f"[ERRO LEXER] {test_name}")
                     print(f"{error.as_string()}")
+            return False
+        
+        # Executa o parser
+        parser = Parser(tokens)
+        ast = parser.parse()
+        
+        if ast.error:
+            if verbosity <= 2:
+                if verbosity <= 1:
+                    print(f"\n[ERRO PARSER]:")
+                    print(f"\n{ast.error.as_string()}")
+                else:
+                    print(f"[ERRO PARSER] {test_name}")
+                    print(f"{ast.error.as_string()}")
             return False
         
         if verbosity == 1:
             # Imprime o resultado
             print(f"\n[OK] Teste passou\n")
             
-            # Se for uma lista de tokens, mostra cada um
-            if isinstance(resultado, list):
-                print(f"Tokens ({len(resultado)} items):\n")
-                for i, item in enumerate(resultado, 1):
-                    if hasattr(item, 'type') and hasattr(item, 'value'):
-                        # É um token - formato: <TIPO, valor>
-                        if item.value is not None:
-                            print(f"{i:3d}. <{item.type}, {item.value}>")
-                        else:
-                            print(f"{i:3d}. <{item.type}>")
-                    else:
-                        print(f"{i:3d}. {item}")
-                print()
+            # Mostra a AST
+            if ast.node:
+                print(f"AST gerada:\n")
+                print(f"{ast.node}\n")
         
         return True
         
@@ -114,18 +122,9 @@ def test_file(filename, test_name, tester_func, verbosity=1):
         return False
 
 
-def test_lexer(filename, text):
-    """
-    Función de teste para o Lexer
-    Retorna (tokens, error)
-    """
-    lexer = Lexer(filename, text)
-    return lexer.make_tokens()
-
-
 def main(verbosity=1):
     """
-    Executa todos os testes
+    Executa todos os testes do Parser
     
     Verbosity levels:
     1 - Completo: mostra tudo
@@ -133,23 +132,23 @@ def main(verbosity=1):
     3 - Silencioso
     """
     print("\n" + "="*60)
-    print("TESTES DO LEXER - MINI-LANG")
+    print("TESTES DO PARSER - MINI-LANG")
     print("="*60)
     
     tests = [
-        ("test_comentarios.mini", "1. TESTE DE COMENTARIOS (//)", True),
-        ("test_numeros.mini", "2. TESTE DE NUMEROS (int e real)", True),
-        ("test_strings.mini", "3. TESTE DE STRINGS", True),
-        ("test_tokens_basicos.mini", "4. TESTE DE TOKENS BASICOS", True),
-        ("test_numeros_edge_cases.mini", "5. TESTE DE NUMEROS - CASOS ESPECIAIS", True),
-        ("test_completo_fatorial.mini", "6. TESTE COMPLETO - FATORIAL", True),
-        ("test_erros_strings.mini", "7. TESTE DE ERROS - STRINGS NAO FECHADAS", False),
-        ("test_erros_caracteres.mini", "8. TESTE DE ERROS - CARACTERES INVALIDOS", False),
+        ("test_var_decl.mini", "1. TESTE - DECLARACAO DE VARIAVEL", True),
+        ("test_aritmetica.mini", "2. TESTE - EXPRESSOES ARITMETICAS", True),
+        ("test_funcao_simples.mini", "3. TESTE - FUNCAO SIMPLES", True),
+        ("test_if_while.mini", "4. TESTE - IF E WHILE", True),
+        ("test_fatorial_completo.mini", "5. TESTE COMPLETO - FATORIAL", True),
+        ("test_funcoes_multiplas.mini", "6. TESTE - MULTIPLAS FUNCOES", True),
+        ("test_erro_sintaxe_1.mini", "7. TESTE - ERRO SINTAXICO 1", False),
+        ("test_erro_sintaxe_2.mini", "8. TESTE - ERRO SINTAXICO 2", False),
     ]
     
     results = []
     for filename, title, should_succeed in tests:
-        success = test_file(filename, title, test_lexer, verbosity)
+        success = test_file_parser(filename, title, verbosity)
         results.append((title, success, should_succeed))
     
     # Resumo dos testes
@@ -174,7 +173,7 @@ def main(verbosity=1):
 
 
 if __name__ == "__main__":
-    # Verbosity pode ser passada como argumento: python test_lexer_mini_lang.py 2
+    # Verbosity pode ser passada como argumento: python test_parser_mini_lang.py 2
     verbosity = 1
     if len(sys.argv) > 1:
         try:
@@ -183,7 +182,7 @@ if __name__ == "__main__":
                 print("Verbosity deve ser 1, 2 ou 3")
                 sys.exit(1)
         except ValueError:
-            print("Argumento inválido. Use: python test_lexer_mini_lang.py [1|2|3]")
+            print("Argumento inválido. Use: python test_parser_mini_lang.py [1|2|3]")
             sys.exit(1)
     
     main(verbosity=verbosity)

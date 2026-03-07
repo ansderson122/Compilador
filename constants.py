@@ -62,6 +62,7 @@ KEYWORDS = [
     'real',     # Tipo real/float
     'bool',     # Tipo booleano
     'void',     # Tipo vazio (sem retorno)
+    'string',   # Tipo string/texto
     'and',      # Operador lógico E
     'or',       # Operador lógico OU
     'not',      # Operador lógico NÃO

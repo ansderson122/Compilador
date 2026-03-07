@@ -1,0 +1,18 @@
+// Teste - Múltiplas funções
+def dobro(x : int) : int {
+  return x * 2;
+}
+
+def triplo(x : int) : int {
+  return x * 3;
+}
+
+def quadrado(x : int) : int {
+  var resultado : int = x * x;
+  return resultado;
+}
+
+var valor : int = 10;
+var d : int = dobro(valor);
+var t : int = triplo(valor);
+var q : int = quadrado(valor);

@@ -1,0 +1,9 @@
+// Teste de função simples
+def soma(a : int, b : int) : int {
+  var resultado : int = a + b;
+  return resultado;
+}
+
+def saudacao() : void {
+  print "Olá!";
+}

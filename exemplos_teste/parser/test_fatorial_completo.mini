@@ -1,0 +1,14 @@
+// Teste completo - Cálculo de fatorial
+def fatorial(n : int) : int {
+  if (n <= 1) {
+    return 1;
+  }
+  else {
+    var resultado : int = n * fatorial(n - 1);
+    return resultado;
+  }
+}
+
+var num : int = 5;
+var fat : int = fatorial(num);
+print "Fatorial calculado";

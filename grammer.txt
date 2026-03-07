@@ -1,0 +1,196 @@
+================================================================================
+                    GRAMÁTICA BNF - LINGUAGEM MINI-LANG
+================================================================================
+
+================================================================================
+                              PROGRAMA
+================================================================================
+
+<program> → <statement_list>
+<statement_list> → <statement> <statement_list>
+                 | ε
+
+<block> → "{" <statement_list> "}"
+
+================================================================================
+                              STATEMENTS
+================================================================================
+
+<statement> → <variable_decl> ";"
+            | <assignment> ";"
+            | <print_statement> ";"
+            | <if_statement>
+            | <while_statement>
+            | <return_statement> ";"
+            | <function_decl>
+            | <block>
+
+<function_decl> → "def" <identifier> "(" <formal_params_opt> ")" ":" <type> <block>
+
+<formal_params_opt> → <formal_params>
+                    | ε
+
+<formal_params> → <formal_param> <formal_params_rest>
+
+<formal_params_rest> → "," <formal_param> <formal_params_rest>
+                     | ε
+
+<formal_param> → <identifier> ":" <type>
+
+<while_statement> → "while" "(" <expression> ")" <block>
+
+<if_statement> → "if" "(" <expression> ")" <block> <else_opt>
+
+<else_opt> → "else" <block>
+           | ε
+
+<return_statement> → "return" <expression>
+
+<print_statement> → "print" <string_literal>
+
+<type> → "int"
+       | "real"
+       | "bool"
+       | "void"
+
+================================================================================
+                              DECLARAÇÕES
+================================================================================
+
+<variable_decl> → "var" <identifier> ":" <type> "=" <expression>
+
+<assignment> → "set" <identifier> "=" <expression>
+
+================================================================================
+                            EXPRESSÕES
+================================================================================
+
+<expression> → <simple_expression> <expression_rest>
+
+<expression_rest> → <relational_op> <simple_expression> <expression_rest>
+                  | ε
+
+<simple_expression> → <term> <simple_expression_rest>
+
+<simple_expression_rest> → <additive_op> <term> <simple_expression_rest>
+                        | ε
+
+<term> → <factor> <term_rest>
+
+<term_rest> → <multiplicative_op> <factor> <term_rest>
+            | ε
+
+<factor> → <literal>
+         | <identifier>
+         | <function_call>
+         | <sub_expression>
+         | <unary>
+
+<unary> → <unary_op> <expression>
+
+<unary_op> → "+"
+           | "-"
+           | "not"
+
+<sub_expression> → "(" <expression> ")"
+
+<function_call> → <identifier> "(" <actual_params_opt> ")"
+
+<actual_params_opt> → <actual_params>
+                    | ε
+
+<actual_params> → <expression> <actual_params_rest>
+
+<actual_params_rest> → "," <expression> <actual_params_rest>
+                     | ε
+
+================================================================================
+                            OPERADORES
+================================================================================
+
+<relational_op> → "<"
+                | ">"
+                | "=="
+                | "!="
+                | "<="
+                | ">="
+
+<additive_op> → "+"
+              | "-"
+              | "or"
+
+<multiplicative_op> → "*"
+                    | "/"
+                    | "and"
+
+================================================================================
+                            IDENTIFICADORES
+================================================================================
+
+<identifier> → <id_start> <id_rest>
+
+<id_start> → "_"
+           | <letter>
+
+<id_rest> → <id_char> <id_rest>
+          | ε
+
+<id_char> → "_"
+          | <letter>
+          | <digit>
+
+<letter> → "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j"
+         | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t"
+         | "u" | "v" | "w" | "x" | "y" | "z"
+         | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J"
+         | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T"
+         | "U" | "V" | "W" | "X" | "Y" | "Z"
+
+<digit> → "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+
+================================================================================
+                            LITERAIS
+================================================================================
+
+<literal> → <integer_literal>
+          | <real_literal>
+          | "true"
+          | "false"
+
+<integer_literal> → <digit_list>
+
+<digit_list> → <digit> <digit_list>
+             | <digit>
+
+<real_literal> → <digit_list> "." <digit_list>
+
+<string_literal> → """ <string_content> """
+
+<string_content> → <string_char> <string_content>
+                 | ε
+
+<string_char> → <letter>
+              | <digit>
+              | <symbol>
+              | " "
+
+<symbol> → qualquer caractere imprimível exceto "
+
+================================================================================
+                            SÍMBOLOS TERMINAIS
+================================================================================
+
+Palavras-chave:
+  var, def, if, else, while, return, print, set, int, real, bool, void,
+  and, or, not, true, false
+
+Operadores:
+  +, -, *, /, ==, !=, <, >, <=, >=, =
+
+Símbolos de pontuação:
+  (, ), {, }, ;, :, ,
+
+Literais:
+  <integer>, <real>, <string>, <identifier>
+
+================================================================================

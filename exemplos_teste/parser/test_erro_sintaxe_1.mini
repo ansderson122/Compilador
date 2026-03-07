@@ -1,0 +1,2 @@
+// Teste de erro sintáxico 1 - Falta ':' na declaração
+var x int = 5;

@@ -1,0 +1,7 @@
+// Teste de expressões aritméticas
+var resultado : int = 10 + 20;
+var multiplicacao : int = 5 * 3;
+var divisao : real = 15 / 2;
+var negativo : int = -10;
+var expr_complexa : int = (5 + 3) * 2;
+var com_not : bool = not true;
