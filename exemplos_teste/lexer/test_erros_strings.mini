@@ -1,0 +1,4 @@
+// Arquivo para testar ERROS LEXICOS que o lexer deve detectar
+
+// ERRO 1: String não fechada (falta a aspas de fechamento)
+print "Esta string não foi fechada;

@@ -1,0 +1,19 @@
+// Arquivo para testar ERROS LEXICOS - Caracteres inválidos
+
+// ERRO 1: Caractere inválido "@"
+var email@dominio : int = 5;
+
+// ERRO 2: Caractere inválido "$"
+var $variavel : int = 10;
+
+// ERRO 3: Caractere inválido "#"
+var valor#importante : real = 3.14;
+
+// ERRO 4: Caractere inválido "~"
+var ~negacao : bool = true;
+
+// ERRO 5: Múltiplos caracteres inválidos em sequência
+var teste : int = 5 + % & | = 10;
+
+// Isso seria válido
+var valido : int = 42;

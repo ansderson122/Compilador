@@ -1,0 +1,42 @@
+// Teste de todos os tokens básicos da linguagem Mini-Lang
+
+// Declaração de variáveis
+var idade : int = 25;
+var altura : real = 1.75;
+var ativo : bool = true;
+
+// Operadores aritméticos: + - * /
+var resultado : int = 10 + 5 - 3 * 2 / 1;
+
+// Operadores relacionais: < > == != <= >=
+if (idade > 18 and altura >= 1.60) {
+    // Bloco
+}
+
+// Operadores lógicos: and or not
+var condicao : bool = true and false;
+var outro : bool = not ativo;
+
+// Tokens especiais: , : ; ( ) { }
+def funcao(param1 : int, param2 : real) : bool {
+    var local : int = 10;
+    set local = 20;
+    return true;
+}
+
+// Palavras-chave
+if (true) {
+    while (ativo) {
+        return 0;
+    }
+}
+
+if (false) {
+    print "False";
+} else {
+    print "True";
+}
+
+// Valores booleanos
+var verdadeiro : bool = true;
+var falso : bool = false;

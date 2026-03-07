@@ -1,0 +1,70 @@
+// Exemplo completo: Cálculo de Fatorial
+// Este programa demonstra o uso de múltiplos tokens e estruturas
+
+// Comentários são ignorados pelo lexer
+// Variáveis globais
+var numero_entrada : int = 5;
+var resultado_final : int = 1;
+
+// Função que calcula fatorial de forma recursiva
+def calcular_fatorial(n : int) : int {
+    if (n > 1) {
+        // Chamada recursiva
+        return n * calcular_fatorial(n - 1);
+    } else {
+        return 1;
+    }
+}
+
+// Função auxiliar para imprimir resultado
+def processar() : void {
+    var n : int = 5;
+    
+    // Loop de teste
+    while (n > 0) {
+        set numero_entrada = n;
+        set resultado_final = calcular_fatorial(n);
+        print "Resultado";
+        set n = n - 1;
+    }
+}
+
+// Operações matemáticas
+var a : real = 10.5;
+var b : real = 3.2;
+var soma : real = a + b;
+var diferenca : real = a - b;
+var produto : real = a * b;
+var quociente : real = a / b;
+
+// Operações lógicas
+var condicao1 : bool = true;
+var condicao2 : bool = false;
+var resultado_and : bool = condicao1 and condicao2;
+var resultado_or : bool = condicao1 or condicao2;
+var resultado_not : bool = not condicao1;
+
+// Comparações
+if (numero_entrada == 5) {
+    print "Número é igual a 5";
+}
+
+if (numero_entrada != 0) {
+    print "Número é diferente de zero";
+}
+
+if (numero_entrada < 10) {
+    print "Número é menor que 10";
+}
+
+if (numero_entrada > 0) {
+    print "Número é maior que zero";
+}
+
+if (numero_entrada <= 5) {
+    print "Número é menor ou igual a 5";
+}
+
+if (numero_entrada >= 5) {
+    print "Número é maior ou igual a 5";
+}

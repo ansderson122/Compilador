@@ -1,0 +1,21 @@
+// Testes com strings
+print "Olá Mundo";
+
+print "String simples";
+print "String com números 123";
+print "String com espaços";
+
+print "String com caracteres especiais !@#$%^&*()";
+
+var mensagem : string = "Iniciando";
+var saudacao : string = "Bem vindo ao compilador Mini-Lang";
+
+// Strings com escape
+print "String com quebra de linha: \n e tabulação: \t";
+
+var com_escape : string = "Aspas internamente  \" aqui \" ";
+var barra : string = "Uma barra invertida aqui";
+
+// Concatenação simples (se suportado)
+print "Primeira parte";
+print "Segunda parte";

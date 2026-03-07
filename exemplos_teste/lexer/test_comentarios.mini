@@ -1,0 +1,15 @@
+// Este é um comentário simples
+var x : int = 5;
+
+// Comentário antes de função
+def calcular(n : int) : int {
+    // Comentário dentro da função
+    if (n > 0) { // Comentário na mesma linha
+        return n;
+    } // Outro comentário
+    return 1; // Comentário final
+}
+
+// Comentário longo que explica algo importante
+// e continua na próxima linha
+var resultado : int = 0;

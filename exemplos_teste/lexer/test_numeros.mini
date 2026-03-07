@@ -1,0 +1,20 @@
+// Testes com números inteiros e reais
+var a : int = 0;
+var b : int = 42;
+var c : int = 9999;
+
+// Números reais
+var pi : real = 3.14;
+var e : real = 2.71828;
+var zero : real = 0.0;
+var pequeno : real = 0.001;
+
+// Operações com números
+var soma : int = 10 + 20;
+var subtracao : int = 100 - 25;
+var multiplicacao : int = 5 * 6;
+var divisao : int = 20 / 4;
+
+// Números reais em operações
+var resultado : real = 10.5 + 2.3;
+var calculo : real = 15.0 - 3.5;

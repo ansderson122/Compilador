@@ -1,0 +1,44 @@
+// Teste de números com casos especiais
+
+// Números inteiros simples
+var n1 : int = 0;
+var n2 : int = 1;
+var n3 : int = 123456789;
+
+// Números reais com várias casas decimais
+var f1 : real = 0.0;
+var f2 : real = 1.5;
+var f3 : real = 0.123456789;
+var f4 : real = 999.999;
+
+// Números reais com zeros
+var f5 : real = 1.0;
+var f6 : real = 10.0;
+var f7 : real = 0.1;
+var f8 : real = 0.01;
+
+// Operações com números pequenos
+var pequeno1 : real = 0.0001;
+var pequeno2 : real = 0.00001;
+
+// Operações com números grandes
+var grande1 : int = 1000000;
+var grande2 : int = 9999999999;
+
+// Números em expressões
+var resultado1 : int = 10 + 20 + 30;
+var resultado2 : real = 1.5 + 2.5 + 3.0;
+
+// Números negativos (através de operador unário)
+var negativo1 : int = 0 - 5;
+var negativo2 : real = 0.0 - 3.14;
+
+// Números em comparações
+if (42 > 10) {
+    var comparacao : bool = true;
+}
+
+// Variáveis com números nos nomes
+var var1 : int = 1;
+var var2 : int = 2;
+var numero123 : int = 123;
