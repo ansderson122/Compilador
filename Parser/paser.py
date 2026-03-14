@@ -614,23 +614,17 @@ class Parser:
 
     def print_statement(self, pos_start):
         """
-        <print_statement> → "print" <string_literal>
-        Statement de impressão
+        <print_statement> → "print" <expression>
+        Statement de impressão (keyword 'print' já foi consumido)
         """
         res = ParseResult()
 
-        if self.current_tok.type != TT_STRING:
-            return res.failure(InvalidSyntaxError(
-                self.current_tok.pos_start, self.current_tok.pos_end,
-                "Esperado string"
-            ))
+        # Obtém a expressão a ser impressa
+        expr = res.register(self.expression())
+        if res.error:
+            return res
 
-        string_tok = self.current_tok
-        res.register_advancement()
-        self.advance()
-
-        string_node = StringNode(string_tok)
-        return res.success(PrintNode(string_node))
+        return res.success(PrintNode(expr))
 
     def return_statement(self, pos_start):
         """

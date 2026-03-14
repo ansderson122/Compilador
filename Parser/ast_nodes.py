@@ -83,24 +83,31 @@ class BinaryOpNode:
     def __repr__(self):
         return f'({self.left_node} {self.op_tok} {self.right_node})'
 
-    def to_python(self, ):
+    def to_python(self, indent=0):
+        # Extrai o operador
+        if hasattr(self.op_tok, 'value') and self.op_tok.value:
+            op_str = self.op_tok.value
+        elif hasattr(self.op_tok, 'type'):
+            op_str = self.op_tok.type
+        else:
+            op_str = str(self.op_tok)
+        
         # Mapeia operadores Mini-Lang para Python
         op_map = {
-            'and': 'and',
-            'or': 'or',
-            '==': '==',
-            '!=': '!=',
-            '<': '<',
-            '>': '>',
-            '<=': '<=',
-            '>=': '>=',
-            '+': '+',
-            '-': '-',
-            '*': '*',
-            '/': '/'
+            'PLUS': '+',
+            'MINUS': '-',
+            'MUL': '*',
+            'DIV': '/',
+            'AND': 'and',
+            'OR': 'or',
+            'EE': '==',
+            'NE': '!=',
+            'LT': '<',
+            'GT': '>',
+            'LTE': '<=',
+            'GTE': '>='
         }
         
-        op_str = self.op_tok.value if hasattr(self.op_tok, 'value') else self.op_tok.type
         op = op_map.get(op_str, op_str)
         
         left = self.left_node.to_python(0)
@@ -126,14 +133,25 @@ class UnaryOpNode:
         return f'({self.op_tok} {self.node})'
 
     def to_python(self, indent=0):
+        # Extrai o operador
+        if hasattr(self.op_tok, 'value') and self.op_tok.value:
+            op_str = self.op_tok.value
+        elif hasattr(self.op_tok, 'type'):
+            op_str = self.op_tok.type
+        else:
+            op_str = str(self.op_tok)
+        
         # Mapeia operadores Mini-Lang para Python
         op_map = {
             'not': 'not ',
             '+': '+',
-            '-': '-'
+            '-': '-',
+            # Tipos de token do parser
+            'PLUS': '+',
+            'MINUS': '-',
+            'NOT': 'not '
         }
         
-        op_str = self.op_tok.value if hasattr(self.op_tok, 'value') else self.op_tok.type
         op = op_map.get(op_str, op_str)
         
         operand = self.node.to_python(0)
@@ -190,18 +208,18 @@ class AssignmentNode:
 
 
 class PrintNode:
-    def __init__(self, string_node):
-        self.string_node = string_node
+    def __init__(self, expression):
+        self.expression = expression
 
-        self.pos_start = string_node.pos_start
-        self.pos_end = string_node.pos_end
+        self.pos_start = expression.pos_start
+        self.pos_end = expression.pos_end
 
     def __repr__(self):
-        return f'<PRINT, {self.string_node}>'
+        return f'<PRINT, {self.expression}>'
 
     def to_python(self, indent=0):
-        string_code = self.string_node.to_python(indent)
-        return f'{" " * indent}print({string_code})'
+        expr_code = self.expression.to_python(indent)
+        return f'{" " * indent}print({expr_code})'
 
 
 class ReturnNode:

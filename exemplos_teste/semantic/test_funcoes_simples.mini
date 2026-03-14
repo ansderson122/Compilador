@@ -9,3 +9,6 @@ def multiply(x : int, y : int) : int {
 
 var result1 : int = add(5, 3);
 var result2 : int = multiply(4, 7);
+
+print result1;
+print result2;

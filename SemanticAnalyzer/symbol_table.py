@@ -57,5 +57,13 @@ class escope:
             if table.verify_symbol(symbol):
                 return True
         return False
+    
+    # Obtém um símbolo de qualquer escopo (procura nos escopos pai também)
+    def get_symbol(self, symbol):
+        """Busca um símbolo em todos os escopos, começando do topo da pilha"""
+        for table in reversed(self.table_stack):
+            if table.verify_symbol(symbol):
+                return table.get_symbol(symbol)
+        raise Exception(f"{symbol} não foi declarado")
         
     

@@ -197,7 +197,7 @@ def main(verbosity=1):
     total = len(results)
     
     for test_name, result in results:
-        status = "[✓ OK]" if result else "[✗ FALHA]"
+        status = "[OK]" if result else "[FALHA]"
         print(f"{status} {test_name}")
     
     print("\n" + "-"*70)

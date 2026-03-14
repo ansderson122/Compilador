@@ -122,7 +122,8 @@ class SemanticAnalyzer:
     # ========== PRINT ==========
     def visit_print(self, node: PrintNode):
         """Verifica print statement"""
-        self.visit(node.string_node)
+        # Valida a expressão a ser impressa
+        return self.visit(node.expression)
     
     # ========== RETURN ==========
     def visit_return(self, node: ReturnNode):
@@ -200,7 +201,7 @@ class SemanticAnalyzer:
         if not self.scope.verify_symbol(func_name):
             raise Exception(f"Função '{func_name}' não foi declarada")
         
-        func_info = self.scope.current_table().get_symbol(func_name)
+        func_info = self.scope.get_symbol(func_name)
         
         # Verifica se é realmente uma função
         if func_info["Type"] != "function":

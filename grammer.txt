@@ -46,7 +46,7 @@
 
 <return_statement> → "return" <expression>
 
-<print_statement> → "print" <string_literal>
+<print_statement> → "print" <expression>
 
 <type> → "int"
        | "real"
