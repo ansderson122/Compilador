@@ -15,8 +15,7 @@ TESTES DO PARSER:
 import sys
 import os
 
-# Adicionar os caminhos ao sys.path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'Lexer'))
+# Adicionar o diretório pai ao sys.path para importar módulos
 sys.path.insert(0, os.path.dirname(__file__) + '/..')
 
 from Lexer.lexer import Lexer

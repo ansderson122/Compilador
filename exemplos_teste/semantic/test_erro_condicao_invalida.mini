@@ -1,0 +1,6 @@
+// Teste de ERRO: condição não-booleana em IF
+var x : int = 10;
+
+if (x) {
+    var y : int = 5;
+}

@@ -1,0 +1,6 @@
+// Teste de ERRO: tipo de argumento incorreto
+def process(x : int) : int {
+    return x * 2;
+}
+
+var result : int = process(3.14);

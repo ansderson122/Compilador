@@ -1,0 +1,2 @@
+// Teste de ERRO: tipo incompatível em declaração
+var x : int = 3.14;

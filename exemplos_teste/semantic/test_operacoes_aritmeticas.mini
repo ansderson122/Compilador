@@ -1,0 +1,6 @@
+// Teste de operações aritméticas
+var a : int = 10;
+var b : int = 20;
+var c : int = a + b;
+var d : real = 3.14 * 2.0;
+var e : int = (a - b) * 5;

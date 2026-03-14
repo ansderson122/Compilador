@@ -1,0 +1,8 @@
+// Teste de operações lógicas e comparações
+var x : int = 10;
+var y : int = 20;
+var b1 : bool = x < y;
+var b2 : bool = x == y;
+var b3 : bool = x != y;
+var b4 : bool = true and false;
+var b5 : bool = true or false;

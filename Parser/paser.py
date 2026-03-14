@@ -11,10 +11,12 @@ class ParseResult:
         self.advance_count = 0
         self.to_reverse_count = 0
 
+    # Registra um avanço no token e atualiza os contadores
     def register_advancement(self):
         self.last_registered_advance_count = 1
         self.advance_count += 1
 
+    # Registra o resultado de uma regra de produção, atualizando o nó e o erron caso haja
     def register(self, res):
         self.last_registered_advance_count = res.advance_count
         self.advance_count += res.advance_count
@@ -22,16 +24,19 @@ class ParseResult:
             self.error = res.error
         return res.node
 
+    # Tenta registrar o resultado de uma regra de produção, mas se houver erro, armazena quantos avanços foram feitos para poder retroceder
     def try_register(self, res):
         if res.error:
             self.to_reverse_count = res.advance_count
             return None
         return self.register(res)
 
+    # Marca o resultado como sucesso, armazenando o nó resultante
     def success(self, node):
         self.node = node
         return self
 
+    # Marca o resultado como falha, armazenando o erro se ainda não houver um erro registrado ou se nenhum avanço tiver sido feito
     def failure(self, error):
         if not self.error or self.last_registered_advance_count == 0:
             self.error = error
@@ -44,26 +49,33 @@ class Parser:
         self.tok_idx = -1
         self.advance()
 
+    # Avança para o próximo token e atualiza o token atual
     def advance(self):
         self.tok_idx += 1
         self.update_current_tok()
         return self.current_tok
 
+    # Permite retroceder o token para tentar outra regra de produção
     def reverse(self, amount=1):
         self.tok_idx -= amount
         self.update_current_tok()
         return self.current_tok
 
+    # Atualiza o token atual com base no índice do token
     def update_current_tok(self):
         if self.tok_idx >= 0 and self.tok_idx < len(self.tokens):
             self.current_tok = self.tokens[self.tok_idx]
 
+    # =================================================================================
+    # Esse função é o ponto de entrada para o parser - chama a regra raiz do programa
+    # Ela é chamada pelos testes para obter a AST completa do programa
+    # current_tok é inicializado no construtor e atualizado por advance() e reverse()
     def parse(self):
-        res = self.statements()
+        res = self.program()
         if not res.error and self.current_tok.type != TT_EOF:
             return res.failure(InvalidSyntaxError(
                 self.current_tok.pos_start, self.current_tok.pos_end,
-                "Token cannot appear after previous tokens"
+                 "Token cannot appear after previous tokens"
             ))
         return res
 

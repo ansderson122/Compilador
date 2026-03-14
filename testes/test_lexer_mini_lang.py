@@ -13,10 +13,10 @@ TESTES DO LEXER:
 import sys
 import os
 
-# Adicionar o caminho do lexer ao sys.path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'Lexer'))
-sys.path.insert(0, os.path.dirname(__file__) + '/..')
+# Adicionar o diretório pai ao sys.path para importar módulos
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+# Imports diretos e simples
 from Lexer.lexer import Lexer
 from constants import *
 from error import Error

@@ -83,7 +83,7 @@ class BinaryOpNode:
     def __repr__(self):
         return f'({self.left_node} {self.op_tok} {self.right_node})'
 
-    def to_python(self, indent=0):
+    def to_python(self, ):
         # Mapeia operadores Mini-Lang para Python
         op_map = {
             'and': 'and',
@@ -103,8 +103,8 @@ class BinaryOpNode:
         op_str = self.op_tok.value if hasattr(self.op_tok, 'value') else self.op_tok.type
         op = op_map.get(op_str, op_str)
         
-        left = self.left_node.to_python(indent)
-        right = self.right_node.to_python(indent)
+        left = self.left_node.to_python(0)
+        right = self.right_node.to_python(0)
         
         return f'({left} {op} {right})'
 
@@ -136,7 +136,7 @@ class UnaryOpNode:
         op_str = self.op_tok.value if hasattr(self.op_tok, 'value') else self.op_tok.type
         op = op_map.get(op_str, op_str)
         
-        operand = self.node.to_python(indent)
+        operand = self.node.to_python(0)
         
         return f'({op}{operand})'
 
@@ -149,17 +149,17 @@ class UnaryOpNode:
 class VariableDeclNode:
     def __init__(self, var_name, var_type, expression):
         self.var_name = var_name  # Token do identificador
-        self.var_type = var_type   # Token do tipo (int, real, bool, void)
+        self.var_type = var_type   # Token do tipo (int, real, bool)
         self.expression = expression  # Nó da expressão
 
         self.pos_start = var_name.pos_start
         self.pos_end = expression.pos_end
 
     def __repr__(self):
-        return f'<VAR_DECL {self.var_name.value} : {self.var_type.value} = {self.expression}>'
+        return f'<VAR_DECL, {self.var_name.value} : {self.var_type.value} = {self.expression}>'
 
     def to_python(self, indent=0):
-        expr_code = self.expression.to_python(indent)
+        expr_code = self.expression.to_python(0)
         return f'{" " * indent}{self.var_name.value} = {expr_code}'
 
 
@@ -167,7 +167,7 @@ class VariableDeclNode:
 #                      NODES PARA ATRIBUIÇÃO
 # ===============================================================================
 
-
+# A atribuição é diferente da declaração de variável, pois a variável já foi declarada antes e aqui estamos apenas atribuindo um novo valor a ela. Por exemplo:
 class AssignmentNode:
     def __init__(self, var_name, expression):
         self.var_name = var_name  # Token do identificador
@@ -177,10 +177,10 @@ class AssignmentNode:
         self.pos_end = expression.pos_end
 
     def __repr__(self):
-        return f'<ASSIGN {self.var_name.value} = {self.expression}>'
+        return f'<ASSIGN, {self.var_name.value} = {self.expression}>'
 
     def to_python(self, indent=0):
-        expr_code = self.expression.to_python(indent)
+        expr_code = self.expression.to_python(0)
         return f'{" " * indent}{self.var_name.value} = {expr_code}'
 
 
@@ -197,7 +197,7 @@ class PrintNode:
         self.pos_end = string_node.pos_end
 
     def __repr__(self):
-        return f'<PRINT {self.string_node}>'
+        return f'<PRINT, {self.string_node}>'
 
     def to_python(self, indent=0):
         string_code = self.string_node.to_python(indent)
@@ -212,13 +212,13 @@ class ReturnNode:
         self.pos_end = expression.pos_end if expression else None
 
     def __repr__(self):
-        return f'<RETURN {self.expression}>'
+        return f'<RETURN, {self.expression}>'
 
     def to_python(self, indent=0):
         if self.expression is None:
             return f'{" " * indent}return'
         
-        expr_code = self.expression.to_python(indent)
+        expr_code = self.expression.to_python(0)
         return f'{" " * indent}return {expr_code}'
 
 
@@ -242,7 +242,7 @@ class IfNode:
     def to_python(self, indent=0):
         """Retorna if/else como código Python"""
         code = ''
-        cond = self.condition.to_python(indent)
+        cond = self.condition.to_python(0)
         code += f'{" " * indent}if {cond}:\n'
         code += self.if_block.to_python(indent + 4)
         
@@ -266,13 +266,13 @@ class WhileNode:
 
     def to_python(self, indent=0):
         code = ''
-        cond = self.condition.to_python(indent)
+        cond = self.condition.to_python(0)
         code += f'{" " * indent}while {cond}:\n'
         code += self.block.to_python(indent + 4)
         
         return code
 
-
+# blockonode  
 class BlockNode:
     def __init__(self, statements):
         self.statements = statements  # Lista de nós
@@ -285,7 +285,7 @@ class BlockNode:
             self.pos_end = None
 
     def __repr__(self):
-        return f'<BLOCK {self.statements}>'
+        return f'<BLOCK, {self.statements}>'
 
     def to_python(self, indent=0):
         code = ''
@@ -299,6 +299,8 @@ class BlockNode:
 #                    NODES PARA FUNÇÕES
 # ===============================================================================
 
+# FunctionDeclNode representa a declaração de uma função, com seu nome, parâmetros, tipo de retorno e bloco de código
+# FunctionCallNode representa a chamada de uma função, com seu nome e argumentos
 
 class FunctionDeclNode:
     def __init__(self, func_name, params, return_type, block):
@@ -312,7 +314,7 @@ class FunctionDeclNode:
 
     def __repr__(self):
         params_str = ', '.join([f'{p[0].value}:{p[1].value}' for p in self.params])
-        return f'<FUNC_DECL {self.func_name.value}({params_str}) : {self.return_type.value}>'
+        return f'<FUNC_DECL, {self.func_name.value}({params_str}) : {self.return_type.value} => {self.block}>'
 
     def to_python(self, indent=0):
         """Retorna declaração de função como código Python"""
@@ -337,7 +339,7 @@ class FunctionCallNode:
         return f'<FUNC_CALL, {self.func_name.value}({args_str})>'
 
     def to_python(self, indent=0):
-        args = ', '.join([arg.to_python(indent) for arg in self.args])
+        args = ', '.join([arg.to_python(0) for arg in self.args])
         return f'{self.func_name.value}({args})'
 
 
@@ -358,11 +360,11 @@ class ProgramNode:
             self.pos_end = None
 
     def __repr__(self):
-        return f'<PROGRAM {self.statements}>'
+        return f'<PROGRAM, {self.statements}>'
 
     def to_python(self, indent=0):
         code = ''
         for statement in self.statements:
-            code += statement.to_python(indent)
+            code += statement.to_python(0)
             code += '\n'
         return code

@@ -1,0 +1,14 @@
+// Teste de controle de fluxo - IF
+var x : int = 10;
+
+if (x > 5) {
+    var y : int = x + 10;
+}
+
+if (x < 0) {
+    var negative : int = 0;
+}
+else {
+    var positive : int = x;
+}
+

@@ -1,0 +1,7 @@
+// Teste de controle de fluxo - WHILE
+var x : int = 0;
+
+while (x < 10) {
+    var y : int = x + 1;
+    set x = y;
+}

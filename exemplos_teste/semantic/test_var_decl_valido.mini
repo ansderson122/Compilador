@@ -1,0 +1,5 @@
+// Teste de declaração válida de variáveis
+var x : int = 42;
+var pi : real = 3.14;
+var message : string = "Hello";
+var is_active : bool = true;

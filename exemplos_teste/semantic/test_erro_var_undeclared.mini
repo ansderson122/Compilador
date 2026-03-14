@@ -1,0 +1,3 @@
+// Teste de ERRO: variável não declarada
+var x : int = 10;
+var y : int = z + 5;
