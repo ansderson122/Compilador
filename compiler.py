@@ -134,15 +134,31 @@ class MiniLangCompiler:
         Returns:
             int: Código de saída (0 se sucesso)
         """
-        # Primeiro salva o arquivo
-        success, output_filename = self.compile_and_save()
+        # Compila uma única vez
+        python_code, error = self.compile()
         
-        if not success:
+        if error:
+            return 1 
+        
+        # Salva o arquivo
+        output_dir = 'saidas'
+        os.makedirs(output_dir, exist_ok=True)
+        
+        basename = os.path.basename(self.filename)
+        base_without_ext = os.path.splitext(basename)[0]
+        output_filename = os.path.join(output_dir, f"{base_without_ext}.py")
+        
+        print(f"[INFO] Salvando código em: {output_filename}")
+        
+        try:
+            with open(output_filename, 'w', encoding='utf-8') as f:
+                f.write(python_code)
+            print(f"[OK] Arquivo salvo com sucesso")
+        except Exception as e:
+            print(f"[ERRO] Erro ao salvar arquivo: {e}")
             return 1
         
-        # Agora executa
-        python_code, _ = self.compile()
-        
+        # Executa o código compilado
         print(f"\n[INFO] Executando código...")
         print('-'*70)
         

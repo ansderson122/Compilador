@@ -6,8 +6,8 @@ from error import *
 
 class Lexer:
     def __init__(self, fn, text):
-        self.fn = fn
-        self.text = text
+        self.fn = fn # nome do arquivo (para mensagens de erro)
+        self.text = text # código fonte a ser tokenizado
         self.pos = Position(-1, 0, -1, fn, text)
         self.current_char = None
         self.advance()
